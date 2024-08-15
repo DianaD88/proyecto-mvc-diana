@@ -16,19 +16,8 @@ class LoginController {
             //echo 'Desde Post';
             $auth = new usuario($_POST);
             $alertas = $auth-> validarLogin();
-                if(empty($alertas)) {
-                    //echo 'El usuario proporciono correo y contraseña';
-                    //Comprobar que existe el usuario
-                    $usuario = Usuario::buscarPorCampo('email', $auth->email );
-                    if($usuario) {
-                    }else {
-                        Usuario::setAlerta('error' , 'Usuario no encontrado');
-                    }
-               // echo 'El usuario proporciono correo y contraseña...';
-
-            }
-
-
+        
+                
             if(empty($alertas)) {
                 //echo 'El usuario proporciono correo y contraseña';
                 //Comprobar que existe el usuario
@@ -49,7 +38,7 @@ class LoginController {
                         $_SESSION['email'] = $usuario->email;
                         $_SESSION['login'] = true;
 
-                        debuguear($_SESSION);
+                        //debuguear($_SESSION);
 
                         //Redireccionamiento
 
