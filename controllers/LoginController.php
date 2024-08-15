@@ -69,6 +69,7 @@ class LoginController {
     public static function logout() {
         echo 'Desde logout';
     }
+
     public static function olvide(Router $router) {
         $alertas = [];
 
@@ -111,10 +112,6 @@ class LoginController {
         }
     }
    
-
-
-
-
     public static function recuperar(Router $router) {
 
         $alertas = [];
@@ -230,59 +227,36 @@ class LoginController {
 
     public static function confirmar(Router $router) {
         $alertas = [];
-
-        $token =s($_GET['token']);
-
-        $usuario = Usuario::buscarPorCampo('token',$token);
+        $token = s($_GET['token']);
+        $usuario = Usuario::buscarPorCampo('token', $token);
 
         if(empty($usuario)) {
-            echo 'Token no valido';
+            // Mostrar mensaje de error
+            Usuario::setAlerta('error', 'Token No Válido');
         } else {
-            echo 'Token valido, confirmar usuario....';
-       }    
-
-        $router->render('auth/confirmar-cuenta',[
-            'aelerta' => $alertas
-        ]);       
-
-
-        //debuguear($usuario);
-
-       
-    
-        
-        
-        //debuguear($usuario);
-
-        if(empty($usuario)) {
-
-            usuario :: setAlerta('error', 'Token no valido');
-            //echo 'Token no valido';
-        }else {
-            //Modificar a usuario confirmado;
-            //echo 'Token valido,confirmar usuario';
-          
-
-
-            //debuguear($usuario);´
+            // Modificar a usuario confirmado
+            $usuario->confirmado = "1";
+            $usuario->token = null;
             $usuario->guardar();
-            $usuario::setAlerta('exito', 'Cuenta Comprobada Correctamente');
-
-        
+            Usuario::setAlerta('exito', 'Cuenta Comprobada Correctamente');
         }
+       
+        // Obtener alertas
         $alertas = Usuario::getAlertas();
 
+        // Renderizar la vista
         $router->render('auth/confirmar-cuenta', [
             'alertas' => $alertas
         ]);
-
     }
+
     public static function mensaje(Router $router) {
 
         $router->render('auth/mensaje');
 
        
     }
+    
     public static function admin () {
         echo 'Desde admin';
     }
