@@ -2,14 +2,13 @@ import { src, dest, watch, series, parallel } from 'gulp'
 
 import * as dartSass from 'sass'
 import gulpSass from 'gulp-sass'
-const  sass = gulpSass(dartSass)
-
+const sass = gulpSass(dartSass)
 
 import { glob } from 'glob'
 import terser from 'gulp-terser'
 import sharp from 'sharp'
 import path from 'path'
-import fs  from 'fs'
+import fs from 'fs'
 
 
 
