@@ -53,40 +53,38 @@ class Email {
         $mail->send();
     }
 
-    
+     public function enviarInstrucciones() {
+     // create a new object
+     $mail = new PHPMailer();
+     $mail->isSMTP();
+     $mail->Host = $_ENV['EMAIL_HOST'];
+     $mail->SMTPAuth = true;
+     $mail->Port = $_ENV['EMAIL_PORT'];
+     $mail->Username = $_ENV['EMAIL_USER'];
+     $mail->Password = $_ENV['EMAIL_PASS'];
 
-   }
-   public function enviarInstrucciones() {
-    // create a new object
-    $mail = new PHPMailer();
-    $mail->isSMTP();
-    $mail->Host = $_ENV['EMAIL_HOST'];
-    $mail->SMTPAuth = true;
-    $mail->Port = $_ENV['EMAIL_PORT'];
-    $mail->Username = $_ENV['EMAIL_USER'];
-    $mail->Password = $_ENV['EMAIL_PASS'];
+     $mail->setFrom('cuentas@misitio.com');
+     $mail->addAddress($this->email, $this->nombre);
+     $mail->Subject = 'Reestablece tu contraseña';
 
-    $mail->setFrom('cuentas@misitio.com');
-    $mail->addAddress($this->email, $this->nombre);
-    $mail->Subject = 'Reestablece tu contraseña';
+     // Set HTML
+     $mail->isHTML(TRUE);
+     $mail->CharSet = 'UTF-8';
 
-    // Set HTML
-    $mail->isHTML(TRUE);
-    $mail->CharSet = 'UTF-8';
+     $contenido = '<html>';
+     $contenido .= "<p>Hola ";
+     $contenido .= "<strong>" . $this->nombre .  "</strong>";
+     $contenido .= " has solicitado reestablecer tu contraseña. ";
+     $contenido .= "Usa el siguiente enlace para hacerlo.</p>";
+     $contenido .= "<p>Presiona aquí: ";
+     $contenido .= "<a href='". $_ENV['APP_URL'] ."/recuperar?token=";
+     $contenido .= $this->token;
+     $contenido .= "'>Reestablecer contraseña</a>";
+     $contenido .= "<p>Si tú no solicitaste este cambio, puedes ignorar el mensaje.</p>";
+     $contenido .= '</html>';
+     $mail->Body = $contenido;
 
-    $contenido = '<html>';
-    $contenido .= "<p>Hola ";
-    $contenido .= "<strong>" . $this->nombre .  "</strong>";
-    $contenido .= " has solicitado reestablecer tu contraseña. ";
-    $contenido .= "Usa el siguiente enlace para hacerlo.</p>";
-    $contenido .= "<p>Presiona aquí: ";
-    $contenido .= "<a href='". $_ENV['APP_URL'] ."/recuperar?token=";
-    $contenido .= $this->token;
-    $contenido .= "'>Reestablecer contraseña</a>";
-    $contenido .= "<p>Si tú no solicitaste este cambio, puedes ignorar el mensaje.</p>";
-    $contenido .= '</html>';
-    $mail->Body = $contenido;
-
-    //Enviar el mail
-    $mail->send();
+     //Enviar el mail
+     $mail->send();
+    }
 }
